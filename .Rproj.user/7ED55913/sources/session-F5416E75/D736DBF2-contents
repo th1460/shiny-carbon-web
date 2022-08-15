@@ -1,0 +1,27 @@
+library(shiny)
+
+ui_shell_dep <- htmltools::htmlDependency(
+    name = "main",
+    version = "1.0.0",
+    src = "./dist",
+    script = c(file = "main.js"),
+    stylesheet = c(href = "plex.css")
+)
+
+ui_shell <- htmltools::tag("bx-header", 
+                           list(`aria-label`="IBM Carbon Shiny",
+                                htmltools::tag("bx-header-name", 
+                                               list(href="javascript:void 0", 
+                                                    prefix = "Carbon", "Shiny"))))
+
+ui <- fluidPage(
+    
+htmltools::attachDependencies(ui_shell, ui_shell_dep)
+
+)
+
+server <- function(input, output, session) {
+    
+}
+
+shinyApp(ui, server)
