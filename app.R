@@ -1,7 +1,7 @@
 library(shiny)
 
 dep <- htmltools::htmlDependency(
-    name = "main",
+    name = "carbon",
     version = "1.0.0",
     src = "./dist",
     script = c(file = "main.js"),
@@ -16,12 +16,10 @@ ui_shell <- htmltools::tag("bx-header",
 
 dropdown1 <- htmltools::tag("bx-dropdown", 
                             list(`label-text` = "Dropdown",
-                                 value = "bar",
                                  htmltools::tagList(
                                      tag("bx-dropdown-item", list(value = "foo", "Foo")),
                                      tag("bx-dropdown-item", list(value = "bar", "Bar")),
-                                     tag("bx-dropdown-item", list(value = "baz", "Baz"))
-                                 )))
+                                     tag("bx-dropdown-item", list(value = "baz", "Baz")))))
 
 slider <- htmltools::tag("bx-slider", 
                          list(`label-text` = "Slider",
@@ -41,7 +39,6 @@ ui <- fluidPage(
     htmltools::attachDependencies(dropdown1, dep),
     tags$br(),
     htmltools::attachDependencies(slider, dep)
-    
 )
 
 server <- function(input, output, session) {
