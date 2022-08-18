@@ -16,7 +16,7 @@ dep_toggle <- htmltools::htmlDependency(
 )
 ```
 
-Set the components with the `tags`:
+Set the components with the `htmltools::tag`:
 
 ```
 toggle <- htmltools::tag("bx-toggle", 
