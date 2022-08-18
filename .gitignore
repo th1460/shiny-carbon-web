@@ -50,3 +50,4 @@ rsconnect/node_modules
 .Rproj.user
 
 node_modules/
+.DS_Store
