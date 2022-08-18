@@ -38,7 +38,7 @@ The `toggle` in `Shiny.setInputValue("toggle", e.target.__checked)` is the id to
 
 ## Example
 
-![](example.png){width=70%}
+<img src="example.png" width="50%">
 
 ## References
 
