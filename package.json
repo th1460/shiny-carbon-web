@@ -15,6 +15,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
+    "@carbon/grid": "^11.5.0",
     "carbon-web-components": "^1.21.0"
   }
 }

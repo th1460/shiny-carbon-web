@@ -77,50 +77,100 @@ date_picker <- htmltools::tag("bx-date-picker",
                                                        `label-text` = "Date Picker label",
                                                        placeholder = "mm/dd/yyyy"))))
 
+dep_data_table <- htmltools::htmlDependency(
+    name = "data-table",
+    version = "1.0.0",
+    src = list(href = "https://1.www.s81c.com/common"),
+    script = list(type = "module", src = "carbon/web-components/tag/latest/data-table.min.js"),
+    stylesheet = list(href = "carbon-for-ibm-dotcom/tag/v1/latest/plex.css")
+)
+
+
+carbonDataTable <- function() {
+    
+    table_header <- 
+        tagList(htmltools::tag("bx-table-header-cell", "Column1"),
+                htmltools::tag("bx-table-header-cell", "Column1"))
+    
+    table_row <- 
+        tagList(htmltools::tag("bx-table-cell", ""),
+                htmltools::tag("bx-table-cell", ""))
+    
+    data_table <- 
+        htmltools::tag(
+            "bx-data-table", 
+            list(htmltools::tag(
+                "bx-table", 
+                list(htmltools::tag(
+                    "bx-table-head",
+                    list(htmltools::tag(
+                        "bx-table-header-row", table_header))),
+                    htmltools::tag(
+                        "bx-table-body",
+                        list(htmltools::tag(
+                            "bx-table-row", table_row)))))))
+    
+}
+
+carbonTag <- function(text) {
+    
+    dep_tag <- htmltools::htmlDependency(
+        name = "tag",
+        version = "1.0.0",
+        src = list(href = "https://1.www.s81c.com/common"),
+        script = list(type = "module", src = "carbon/web-components/tag/latest/tag.min.js"),
+        stylesheet = list(href = "carbon-for-ibm-dotcom/tag/v1/latest/plex.css")
+    )
+    
+    htmltools::attachDependencies(htmltools::tag("bx-tag", 
+                                                 list(type = "green", 
+                                                      title = "Tag",
+                                                      text)), dep_tag)
+}
+
+
 ui <- function(requests) {
     
     tagList(
-        tags$style(HTML("
-      .Row {
-        display: table;
-        width: 100%;
-        margin: 2rem;
-        margin-top: 4rem;
-        table-layout: fixed;
-        border-spacing: 20px;
-      }
-      
-      .Column {
-        display: table-cell;
-        width: 50%;
-      }
-
-      bx-dropdown:not(:defined),
-      bx-dropdown-item:not(:defined) {
-      visibility: hidden;}")),
+        htmltools::htmlDependency(name = "grid",
+                                  version = "1.0.0", 
+                                  src = list(href = "https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest"),
+                                  stylesheet = list(href = "grid.css")),
         
         htmltools::attachDependencies(ui_shell, dep_ui_shell),
-        tags$div(class = "Row",
-                 tags$div(class = "Column",
-                          htmltools::attachDependencies(dropdown, dep_dropdown),
-                          tags$br(),
-                          htmltools::attachDependencies(slider, dep_slider),
-                          tags$br(),
-                          htmltools::attachDependencies(toggle, dep_toggle),
-                          tags$br(),
-                          htmltools::attachDependencies(date_picker, dep_date_picker),
+        tags$div(class = "bx--grid",
+                 tags$div(class = "bx--row", style = "margin-top: 5rem",
+                          tags$div(class = "bx--col",
+                                   htmltools::attachDependencies(dropdown, dep_dropdown),
+                                   tags$br(),
+                                   htmltools::attachDependencies(slider, dep_slider),
+                                   tags$br(),
+                                   htmltools::attachDependencies(toggle, dep_toggle),
+                                   tags$br(),
+                                   htmltools::attachDependencies(date_picker, dep_date_picker),
+                                   
+                                   tags$script(HTML('document.getElementById("dropdown").addEventListener("bx-dropdown-selected", (e) => {Shiny.setInputValue("dropdown", e.detail.item.value)});')),
+                                   tags$script(HTML('document.getElementById("slider").addEventListener("bx-slider-changed", (e) => {Shiny.setInputValue("slider", e.detail.value)});')),
+                                   tags$script(HTML('document.getElementById("toggle").addEventListener("bx-toggle-changed", (e) => {Shiny.setInputValue("toggle", e.target.__checked)});')),
+                                   tags$script(HTML('document.getElementById("date_picker").addEventListener("bx-date-picker-changed", (e) => {Shiny.setInputValue("date_picker", e.detail.selectedDates[0])});')),
+                          ),
                           
-                          tags$script(HTML('document.getElementById("dropdown").addEventListener("bx-dropdown-selected", (e) => {Shiny.setInputValue("dropdown", e.detail.item.value)});')),
-                          tags$script(HTML('document.getElementById("slider").addEventListener("bx-slider-changed", (e) => {Shiny.setInputValue("slider", e.detail.value)});')),
-                          tags$script(HTML('document.getElementById("toggle").addEventListener("bx-toggle-changed", (e) => {Shiny.setInputValue("toggle", e.target.__checked)});')),
-                          tags$script(HTML('document.getElementById("date_picker").addEventListener("bx-date-picker-changed", (e) => {Shiny.setInputValue("date_picker", e.detail.selectedDates[0])});')),
-                 ),
-                 
-                 tags$div(class = "Column",
-                          textOutput("resdropdown"),
-                          textOutput("resslider"),
-                          textOutput("restoggle"),
-                          textOutput("resdate"),
+                          tags$div(class = "bx--col",
+                                   # htmltools::attachDependencies(carbonDataTable(), dep_data_table),
+                                   h4("Results:"),
+                                   carbonTag("Dropdown:"),
+                                   textOutput("resdropdown"),
+                                   tags$br(),
+                                   carbonTag("Slider:"),
+                                   textOutput("resslider"),
+                                   tags$br(),
+                                   carbonTag("Toggle:"),
+                                   textOutput("restoggle"),
+                                   tags$br(),
+                                   carbonTag("Date Picker:"),
+                                   textOutput("resdate")
+                                   
+                          )
                  )
         )
     )
